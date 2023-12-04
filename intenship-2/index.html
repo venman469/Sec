@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #display {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #controls {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="display">0:00</div>
+
+<div id="controls">
+    <button onclick="startStop()">Start/Stop</button>
+    <button onclick="reset()">Reset</button>
+</div>
+
+<script>
+    var startTime;
+    var isRunning = false;
+
+    function startStop() {
+        if (isRunning) {
+            stop();
+        } else {
+            start();
+        }
+    }
+
+    function start() {
+        startTime = new Date().getTime();
+        isRunning = true;
+        update();
+    }
+
+    function stop() {
+        isRunning = false;
+    }
+
+    function reset() {
+        stop();
+        updateTime(0);
+    }
+
+    function update() {
+        if (isRunning) {
+            var currentTime = new Date().getTime();
+            var elapsed = new Date(currentTime - startTime);
+            updateTime(elapsed);
+            setTimeout(update, 10);
+        }
+    }
+
+    function updateTime(elapsed) {
+        var minutes = elapsed.getMinutes();
+        var seconds = elapsed.getSeconds();
+        var milliseconds = Math.floor(elapsed.getMilliseconds() / 10);
+        document.getElementById("display").innerHTML = pad(minutes) + ":" + pad(seconds) + ":" + pad(milliseconds);
+    }
+
+    function pad(value) {
+        return value < 10 ? "0" + value : value;
+    }
+</script>
+
+</body>
+</html>
